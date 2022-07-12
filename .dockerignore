@@ -1,0 +1,11 @@
+__pycache__
+
+venv
+
+build
+dist
+
+.DS_Store
+.mypy_cache
+.vscode
+.env.sh

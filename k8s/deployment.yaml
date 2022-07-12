@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: fastapi-boostrap
+  name: fastapi-boostrap
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fastapi-boostrap
+  template:
+    metadata:
+      labels:
+        app: fastapi-boostrap
+    spec:
+      containers:
+        - name: api
+          image: dpills/fastapi-boostrap:v1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          envFrom:
+            - secretRef:
+                name: fastapi-boostrap-secret
+          resources:
+            limits:
+              cpu: "2"
+              memory: 3Gi
+            requests:
+              cpu: "1"
+              memory: 1Gi
+          livenessProbe:
+            httpGet:
+              path: /v1/utils/api-status
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
